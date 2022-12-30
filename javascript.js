@@ -17,14 +17,31 @@ const winningMessageElement = document.getElementById("winningMessage")
 const winningMessageTextElement = document.querySelector('[data-winning-message-text]')
 const restartButton = document.getElementById("restartButton")
 const playerTurnElement = document.getElementById("dashboard")
+let playerX 
+let playerCircle 
 let circleTurn
 
 startGame()
 
+function validateName() {
+    if (playerX == "" || playerCircle == "" || playerX == null || playerCircle == null) {
+        alert("Uh oh. Missing name(s). Enter something!");
+        playerX = prompt("Enter Name Player X:")
+        playerCircle = prompt("Enter Name Player Circle:");
+    } else {
+        return false;
+    }
+}
+
+function setPlayerName () {
+    playerX = prompt("Enter Name Player X:")
+    playerCircle = prompt("Enter Name Player Circle:")
+}
 
 restartButton.addEventListener('click', startGame)
 
 function startGame() {
+    setPlayerName()
     circleTurn = false
     indicatePlayer()
     cellElements.forEach(cell => {
@@ -36,6 +53,7 @@ function startGame() {
     setBoardHoverClass()
     winningMessageElement.classList.remove("show")
 }
+
 function handleClick(e) {
     const cell = e.target
     const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
@@ -54,19 +72,21 @@ function handleClick(e) {
 }
 
 function indicatePlayer () {
-    playerTurnElement.innerText = `${circleTurn ? CIRCLE_CLASS : X_CLASS}'s turn`
+    playerTurnElement.innerText = `${circleTurn ? playerCircle : playerX}'s turn`
+    // console.log(`${circleTurn ? CIRCLE_CLASS : X_CLASS}'s turn`)
 }
+
 function endGame(draw) {
     if (draw) {
         winningMessageTextElement.innerText = "Draw!"
     } else {
-        winningMessageTextElement.innerText = `${circleTurn ? "O's" : "X's"} Wins `
+        winningMessageTextElement.innerText = `${circleTurn ? playerCircle : playerX} Wins `
     }
     winningMessageElement.classList.add("show")
 }
 
 function isDraw() {
-    return [...cellElements].every(cell => {
+    return [...cellElements].every(cell => {    
         return cell.classList.contains(X_CLASS) ||
         cell.classList.contains(CIRCLE_CLASS)
     })
