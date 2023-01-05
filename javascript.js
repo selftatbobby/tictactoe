@@ -15,40 +15,34 @@ const cellElements = document.querySelectorAll('[data-cell')
 const board = document.getElementById('board')
 const winningMessageElement = document.getElementById("winningMessage")
 const winningMessageTextElement = document.querySelector('[data-winning-message-text]')
+const startPageElement = document.getElementById("start-page")
+const startButton = document.getElementById("startButton")
 const restartButton = document.getElementById("restartButton")
 const playerTurnElement = document.getElementById("dashboard")
-let playerX 
-let playerCircle 
+const nameButton = document.getElementById("namebutton")
+const form = document.getElementById('nameForm')
+let playerX
+let playerCircle
 let circleTurn
 
-startGame()
 
-function validateName() {
-    if (playerX == "" || playerCircle == "" || playerX == null || playerCircle == null) {
-        alert("Uh oh. Missing name(s). Enter something!");
-        playerX = prompt("Enter Name Player X:")
-        playerCircle = prompt("Enter Name Player Circle:");
-    } else {
-        return false;
-    }
+
+
+function setPlayerName() {
+    playerX = form.elements['playerX'].value
+    playerCircle = form.elements['playerCircle'].value
 }
 
-function setPlayerName () {
-    playerX = prompt("Enter Name Player X:")
-    playerCircle = prompt("Enter Name Player Circle:")
-}
 
-restartButton.addEventListener('click', startGame)
 
 function startGame() {
-    setPlayerName()
     circleTurn = false
     indicatePlayer()
     cellElements.forEach(cell => {
         cell.classList.remove(X_CLASS)
         cell.classList.remove(CIRCLE_CLASS)
         cell.removeEventListener('click', handleClick)
-        cell.addEventListener('click', handleClick, { once: true})
+        cell.addEventListener('click', handleClick, { once: true })
     })
     setBoardHoverClass()
     winningMessageElement.classList.remove("show")
@@ -68,27 +62,26 @@ function handleClick(e) {
         indicatePlayer()
         setBoardHoverClass()
     }
-  
+
 }
 
-function indicatePlayer () {
+function indicatePlayer() {
     playerTurnElement.innerText = `${circleTurn ? playerCircle : playerX}'s turn`
-    // console.log(`${circleTurn ? CIRCLE_CLASS : X_CLASS}'s turn`)
 }
 
 function endGame(draw) {
     if (draw) {
         winningMessageTextElement.innerText = "Draw!"
     } else {
-        winningMessageTextElement.innerText = `${circleTurn ? playerCircle : playerX} Wins `
+        winningMessageTextElement.innerText = `Player ${circleTurn ? CIRCLE_CLASS : X_CLASS}, ${circleTurn ? playerCircle : playerX} wins! `
     }
     winningMessageElement.classList.add("show")
 }
 
 function isDraw() {
-    return [...cellElements].every(cell => {    
+    return [...cellElements].every(cell => {
         return cell.classList.contains(X_CLASS) ||
-        cell.classList.contains(CIRCLE_CLASS)
+            cell.classList.contains(CIRCLE_CLASS)
     })
 }
 
@@ -117,3 +110,39 @@ function checkWin(currentClass) {
         })
     })
 }
+
+
+function validateNames() {
+    setPlayerName()
+    if (playerX == "" || playerCircle == "") {
+        alert("Enter names in the fields to proceed!");
+        return false;
+    }
+    else {
+        startGame()
+        removeStartPage()
+        indicatePlayer()
+    }
+}
+
+
+function removeStartPage() {
+    document.getElementById("start-page").style.display = "none"
+}
+
+function addStartPage() {
+    document.getElementById("start-page").style.display = "flex"
+    form.reset();
+}
+
+
+// buttons
+startButton.addEventListener('click', validateNames)
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+});
+restartButton.addEventListener('click', addStartPage)
+
+
+
+

@@ -13,8 +13,8 @@ body {
 }
 
 .board {
-    width: 100vw;
-    height: 100vh;
+    width: 70vw;
+    height: 70vh;
     display: grid;
     justify-content: center;
     align-content: center;
@@ -64,9 +64,6 @@ body {
 }
 
 
-.cell.circle::after {
-    
-}
 .board.x .cell:not(.x):not(.circle):hover::before,
 .board.x .cell:not(.x):not(.circle):hover::after,
 .board.circle .cell:not(.x):not(.circle):hover::before  {
@@ -148,4 +145,52 @@ body {
 
 .winning-message.show {
     display: flex;
+}
+
+#start-page {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(15, 76, 48);
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 5rem;
+    flex-direction: column;
+}
+
+/* #start-page.show {
+    display: none;
+} */
+
+
+.nameFormPopup {
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+
+.formPopup {
+    display: flex;
+    border: 3px solid #999999;
+    justify-content: flex-start;
+  
+}
+
+form {
+    display: flex;
+    /* justify-content: center; */
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+body {
+    display: block;
+    /* justify-content: space-evenly;    */
+    width: 95vw;
+    height: 95vh;
 }
